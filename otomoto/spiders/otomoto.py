@@ -1726,7 +1726,11 @@ class OtomotoSpider(scrapy.Spider):
                   'https://www.otomoto.pl/osobowe/routan',
                   'https://www.otomoto.pl/osobowe/t-cross',
                   'https://www.otomoto.pl/osobowe/teramont']
-
+    
+    def start_requests(self):
+        for url in self.start_urls:
+            yield scrapy.http.Request(url)
+            
     def parse(self, response):
         for car_page in response.css('.offer-title__link::attr(href)'):
             yield response.follow(car_page, self.parse_car_page)
